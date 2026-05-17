@@ -1,0 +1,810 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BDO Arena of Solare — Top 100</title>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;900&family=Rajdhani:wght@300;400;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0c10;
+    --surface: #111418;
+    --surface2: #181c22;
+    --border: #2a2f3a;
+    --gold: #c8922a;
+    --gold-light: #e8b84b;
+    --blue: #4a90d9;
+    --red: #c0392b;
+    --text: #d4cfc8;
+    --text-dim: #7a7570;
+    --awakening: #c0392b;
+    --succession: #4a90d9;
+    --top3-glow: #c8922a;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Rajdhani', sans-serif;
+    min-height: 100vh;
+    background-image:
+      radial-gradient(ellipse at 20% 0%, rgba(200,146,42,0.06) 0%, transparent 50%),
+      radial-gradient(ellipse at 80% 100%, rgba(74,144,217,0.04) 0%, transparent 50%);
+  }
+
+  header {
+    text-align: center;
+    padding: 48px 24px 32px;
+    border-bottom: 1px solid var(--border);
+    position: relative;
+    overflow: hidden;
+  }
+
+  header::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: linear-gradient(180deg, rgba(200,146,42,0.08) 0%, transparent 100%);
+    pointer-events: none;
+  }
+
+  .header-eyebrow {
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 4px;
+    color: var(--gold);
+    text-transform: uppercase;
+    margin-bottom: 12px;
+  }
+
+  h1 {
+    font-family: 'Cinzel', serif;
+    font-size: clamp(24px, 5vw, 42px);
+    font-weight: 900;
+    color: #fff;
+    letter-spacing: 2px;
+    text-shadow: 0 0 40px rgba(200,146,42,0.3);
+    line-height: 1.1;
+  }
+
+  h1 span { color: var(--gold-light); }
+
+  .header-sub {
+    margin-top: 10px;
+    font-size: 14px;
+    color: var(--text-dim);
+    letter-spacing: 1px;
+  }
+
+  main { max-width: 1300px; margin: 0 auto; padding: 40px 20px 80px; }
+
+  /* ── CONTROLS ── */
+  .controls {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    align-items: center;
+    margin-bottom: 36px;
+  }
+
+  .search-wrap {
+    flex: 1;
+    min-width: 220px;
+    position: relative;
+  }
+
+  .search-wrap input {
+    width: 100%;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    color: var(--text);
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 15px;
+    padding: 10px 16px 10px 40px;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+
+  .search-wrap input:focus { border-color: var(--gold); }
+
+  .search-wrap::before {
+    content: '⌕';
+    position: absolute;
+    left: 14px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--text-dim);
+    font-size: 18px;
+  }
+
+  .filters { display: flex; gap: 8px; flex-wrap: wrap; }
+
+  .filter-btn {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    color: var(--text-dim);
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    padding: 8px 16px;
+    cursor: pointer;
+    text-transform: uppercase;
+    transition: all 0.2s;
+  }
+
+  .filter-btn:hover { border-color: var(--gold); color: var(--gold); }
+  .filter-btn.active { background: var(--gold); border-color: var(--gold); color: #000; }
+
+  /* ── STATS BAR ── */
+  .stats-bar {
+    display: flex;
+    gap: 2px;
+    margin-bottom: 40px;
+    overflow-x: auto;
+    padding-bottom: 4px;
+  }
+
+  .stat-seg {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-end;
+    min-width: 44px;
+    cursor: pointer;
+    padding-bottom: 6px;
+    transition: opacity 0.2s;
+  }
+
+  .stat-seg:hover { opacity: 0.8; }
+
+  .stat-bar-fill {
+    width: 36px;
+    background: var(--gold);
+    transition: height 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+    min-height: 4px;
+  }
+
+  .stat-bar-fill.awakening { background: var(--awakening); }
+  .stat-bar-fill.succession { background: var(--succession); }
+
+  .stat-label {
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    color: var(--text-dim);
+    text-align: center;
+    margin-top: 6px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 44px;
+    text-transform: uppercase;
+  }
+
+  .stat-count {
+    font-family: 'Cinzel', serif;
+    font-size: 11px;
+    color: var(--gold-light);
+    text-align: center;
+    margin-top: 2px;
+  }
+
+  /* ── CLASS GRID ── */
+  .section-title {
+    font-family: 'Cinzel', serif;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 3px;
+    color: var(--text-dim);
+    text-transform: uppercase;
+    margin-bottom: 20px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .class-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 12px;
+    margin-bottom: 56px;
+  }
+
+  .class-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    padding: 18px;
+    transition: border-color 0.2s, transform 0.2s;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .class-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: var(--gold);
+    opacity: 0;
+    transition: opacity 0.2s;
+  }
+
+  .class-card:hover { border-color: var(--gold); transform: translateY(-2px); }
+  .class-card:hover::before { opacity: 1; }
+  .class-card.hidden { display: none; }
+
+  .class-card.awakening-card::before { background: var(--awakening); }
+  .class-card.succession-card::before { background: var(--succession); }
+  .class-card.mixed-card::before { background: linear-gradient(90deg, var(--awakening), var(--succession)); }
+
+  .card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 14px;
+  }
+
+  .class-name {
+    font-family: 'Cinzel', serif;
+    font-size: 16px;
+    font-weight: 600;
+    color: #fff;
+  }
+
+  .class-count-badge {
+    font-family: 'Cinzel', serif;
+    font-size: 22px;
+    font-weight: 900;
+    color: var(--gold-light);
+    line-height: 1;
+  }
+
+  .count-label { font-size: 10px; color: var(--text-dim); text-align: right; letter-spacing: 1px; }
+
+  .spec-tags { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 12px; }
+
+  .spec-tag {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    padding: 3px 8px;
+    text-transform: uppercase;
+    border: 1px solid;
+  }
+
+  .spec-tag.awakening { color: var(--awakening); border-color: rgba(192,57,43,0.4); background: rgba(192,57,43,0.08); }
+  .spec-tag.succession { color: #4a90d9; border-color: rgba(74,144,217,0.4); background: rgba(74,144,217,0.08); }
+
+  .player-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+
+  .player-chip {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--text-dim);
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    padding: 2px 8px;
+    cursor: default;
+    transition: color 0.15s;
+  }
+
+  .player-chip:hover { color: var(--text); }
+
+  .player-chip .rank-num {
+    color: var(--gold);
+    font-size: 10px;
+    margin-right: 4px;
+    font-family: 'Cinzel', serif;
+  }
+
+  .player-chip.top3 {
+    border-color: rgba(200,146,42,0.5);
+    background: rgba(200,146,42,0.1);
+    color: var(--gold-light);
+  }
+
+  /* ── LEADERBOARD ── */
+  .lb-table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+
+  .lb-table thead tr {
+    border-bottom: 1px solid var(--border);
+  }
+
+  .lb-table th {
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    color: var(--text-dim);
+    text-transform: uppercase;
+    padding: 8px 12px;
+    text-align: left;
+  }
+
+  .lb-table tbody tr {
+    border-bottom: 1px solid rgba(42,47,58,0.5);
+    transition: background 0.15s;
+  }
+
+  .lb-table tbody tr:hover { background: var(--surface); }
+  .lb-table tbody tr.hidden { display: none; }
+
+  .lb-table td {
+    padding: 8px 12px;
+    font-size: 14px;
+    font-weight: 500;
+  }
+
+  .lb-rank {
+    font-family: 'Cinzel', serif;
+    font-size: 13px;
+    color: var(--text-dim);
+    width: 50px;
+  }
+
+  .lb-rank.top1 { color: #ffd700; font-weight: 900; }
+  .lb-rank.top2 { color: #c0c0c0; font-weight: 900; }
+  .lb-rank.top3 { color: #cd7f32; font-weight: 900; }
+
+  .lb-name { color: var(--text); font-weight: 600; }
+  .lb-class { color: var(--text-dim); }
+
+  .lb-spec-badge {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    padding: 2px 7px;
+    border: 1px solid;
+    text-transform: uppercase;
+    display: inline-block;
+  }
+
+  .lb-spec-badge.awakening { color: var(--awakening); border-color: rgba(192,57,43,0.35); }
+  .lb-spec-badge.succession { color: #4a90d9; border-color: rgba(74,144,217,0.35); }
+
+  .lb-score {
+    font-family: 'Cinzel', serif;
+    font-size: 13px;
+    color: var(--gold-light);
+    text-align: right;
+  }
+
+  /* ── SEASON HISTORY ── */
+  .history-wrap {
+    margin-bottom: 56px;
+    overflow-x: auto;
+  }
+
+  .history-table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 560px;
+  }
+
+  .history-table thead tr {
+    border-bottom: 1px solid var(--border);
+  }
+
+  .history-table th {
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    color: var(--text-dim);
+    text-transform: uppercase;
+    padding: 10px 12px;
+    text-align: center;
+    cursor: pointer;
+    user-select: none;
+    transition: color 0.15s;
+  }
+
+  .history-table th:hover { color: var(--gold); }
+  .history-table th:first-child { text-align: left; }
+  .history-table th.current { color: var(--gold); }
+  .history-table th.sorted::after {
+    content: ' ▼';
+    font-size: 9px;
+    color: var(--gold);
+  }
+  .history-table th.sorted.asc::after { content: ' ▲'; }
+
+  .history-table tbody tr {
+    border-bottom: 1px solid rgba(42,47,58,0.5);
+    transition: background 0.15s;
+  }
+
+  .history-table tbody tr:hover { background: var(--surface); }
+  .history-table tbody tr.hidden { display: none; }
+
+  .history-table td {
+    padding: 8px 12px;
+    font-size: 14px;
+    text-align: center;
+  }
+
+  .history-table td.cls-name {
+    text-align: left;
+    font-weight: 600;
+    color: var(--text);
+    font-family: 'Cinzel', serif;
+    font-size: 13px;
+  }
+
+  .history-cell {
+    font-family: 'Cinzel', serif;
+    font-weight: 600;
+  }
+
+  .history-cell.zero { color: var(--text-dim); opacity: 0.35; }
+  .history-cell.low { color: var(--text); }
+  .history-cell.med { color: var(--gold); }
+  .history-cell.high {
+    color: var(--gold-light);
+    font-weight: 900;
+    text-shadow: 0 0 12px rgba(232,184,75,0.4);
+  }
+  .history-cell.current-col { background: rgba(200,146,42,0.05); }
+
+  .spark { display: inline-block; vertical-align: middle; }
+
+  .trend-arrow {
+    font-size: 11px;
+    margin-left: 8px;
+    vertical-align: middle;
+  }
+  .trend-up { color: #4ade80; }
+  .trend-down { color: var(--red); }
+  .trend-flat { color: var(--text-dim); }
+
+  @media (max-width: 600px) {
+    .lb-table th:nth-child(4),
+    .lb-table td:nth-child(4) { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-eyebrow">Black Desert Online · NA/EU</div>
+  <h1>Arena of <span>Solare</span></h1>
+  <div class="header-sub">Top 100 Leaderboard — Class Intelligence Report</div>
+</header>
+
+<main>
+
+  <div class="controls">
+    <div class="search-wrap">
+      <input type="text" id="searchInput" placeholder="Search player or class…" oninput="applyFilters()">
+    </div>
+    <div class="filters">
+      <button class="filter-btn active" onclick="setFilter('all', this)">All</button>
+      <button class="filter-btn" onclick="setFilter('awakening', this)">Awakening</button>
+      <button class="filter-btn" onclick="setFilter('succession', this)">Succession</button>
+      <button class="filter-btn" onclick="setFilter('top5', this)">Top 5+</button>
+    </div>
+  </div>
+
+  <div class="section-title">Class Representation — Top 100</div>
+  <div class="stats-bar" id="statsBar"></div>
+
+  <div class="section-title">Class Breakdown</div>
+  <div class="class-grid" id="classGrid"></div>
+
+  <div class="section-title">Season History — Top 100 Representation</div>
+  <div class="history-wrap">
+    <table class="history-table" id="historyTable">
+      <thead>
+        <tr>
+          <th data-sort="cls">Class</th>
+          <th data-sort="0">S4</th>
+          <th data-sort="1">S5</th>
+          <th data-sort="2">S6</th>
+          <th data-sort="3" class="current sorted">S7</th>
+          <th>Trend</th>
+        </tr>
+      </thead>
+      <tbody id="historyBody"></tbody>
+    </table>
+  </div>
+
+  <div class="section-title">Full Leaderboard</div>
+  <table class="lb-table">
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>Player</th>
+        <th>Class</th>
+        <th>Spec</th>
+        <th style="text-align:right">MMR</th>
+      </tr>
+    </thead>
+    <tbody id="lbBody"></tbody>
+  </table>
+
+</main>
+
+<script>
+const players = [
+  {rank:1,  name:"Yuike",          cls:"Lahn",      spec:"Awakening",  mmr:2418},
+  {rank:2,  name:"Manhattan",      cls:"Kunoichi",  spec:"Awakening",  mmr:2309},
+  {rank:3,  name:"Dien",           cls:"Sorceress", spec:"Succession", mmr:2286},
+  {rank:4,  name:"CanadianCorgi",  cls:"Valkyrie",  spec:"Succession", mmr:2237},
+  {rank:5,  name:"NotCoco",        cls:"Seraph",    spec:"Awakening",  mmr:2230},
+  {rank:6,  name:"Divios",         cls:"Wukong",    spec:"Awakening",  mmr:2203},
+  {rank:7,  name:"Meiimo",         cls:"Tamer",     spec:"Awakening",  mmr:2199},
+  {rank:8,  name:"Miss",           cls:"Kunoichi",  spec:"Awakening",  mmr:2199},
+  {rank:9,  name:"BandaidHighlight",cls:"Tamer",    spec:"Awakening",  mmr:2176},
+  {rank:10, name:"Idriel",         cls:"Kunoichi",  spec:"Awakening",  mmr:2174},
+  {rank:11, name:"Hero_Play",      cls:"Dosa",      spec:"Succession", mmr:2166},
+  {rank:12, name:"Ratrospec",      cls:"Nova",      spec:"Succession", mmr:2162},
+  {rank:13, name:"Emanuel",        cls:"Hashashin", spec:"Awakening",  mmr:2159},
+  {rank:14, name:"Poogie",         cls:"Ranger",    spec:"Awakening",  mmr:2158},
+  {rank:15, name:"Meiiimo",        cls:"Tamer",     spec:"Awakening",  mmr:2133},
+  {rank:16, name:"SirChimi",       cls:"Archer",    spec:"Succession", mmr:2126},
+  {rank:17, name:"Goreshit",       cls:"Dark Knight",spec:"Succession", mmr:2123},
+  {rank:18, name:"Pig",            cls:"Striker",   spec:"Awakening",  mmr:2117},
+  {rank:19, name:"Rhya",           cls:"Lahn",      spec:"Awakening",  mmr:2112},
+  {rank:20, name:"Bler",           cls:"Ninja",     spec:"Awakening",  mmr:2111},
+  {rank:21, name:"Anasui",         cls:"Mystic",    spec:"Succession", mmr:2110},
+  {rank:22, name:"Avaganar",       cls:"Warrior",   spec:"Succession", mmr:2110},
+  {rank:23, name:"DisPearBruh",    cls:"Valkyrie",  spec:"Awakening",  mmr:2110},
+  {rank:24, name:"Armin",          cls:"Ninja",     spec:"Succession", mmr:2107},
+  {rank:25, name:"XIZO",           cls:"Tamer",     spec:"Awakening",  mmr:2104},
+  {rank:26, name:"YElo",           cls:"Ninja",     spec:"Awakening",  mmr:2095},
+  {rank:27, name:"DeathsGrip",     cls:"Dark Knight",spec:"Succession", mmr:2076},
+  {rank:28, name:"Calb",           cls:"Kunoichi",  spec:"Succession", mmr:2069},
+  {rank:29, name:"Hatred",         cls:"Seraph",    spec:"Awakening",  mmr:2062},
+  {rank:30, name:"Kozye",          cls:"Lahn",      spec:"Awakening",  mmr:2042},
+  {rank:31, name:"AutumnleafOW",   cls:"Dark Knight",spec:"Succession", mmr:2028},
+  {rank:32, name:"Kayo",           cls:"Musa",      spec:"Awakening",  mmr:2008},
+  {rank:33, name:"Dmike",          cls:"Striker",   spec:"Awakening",  mmr:2006},
+  {rank:34, name:"Multimeltor",    cls:"Mystic",    spec:"Awakening",  mmr:2005},
+  {rank:35, name:"Shikio",         cls:"Maegu",     spec:"Awakening",  mmr:1999},
+  {rank:36, name:"YellowHeart",    cls:"Nova",      spec:"Succession", mmr:1995},
+  {rank:37, name:"Kwy",            cls:"Kunoichi",  spec:"Awakening",  mmr:1992},
+  {rank:38, name:"Sapte",          cls:"Striker",   spec:"Awakening",  mmr:1983},
+  {rank:39, name:"GaOoY0",         cls:"Maegu",     spec:"Succession", mmr:1981},
+  {rank:40, name:"AgonyOST",       cls:"Dark Knight",spec:"Awakening",  mmr:1977},
+  {rank:41, name:"HeartKing",      cls:"Hashashin", spec:"Awakening",  mmr:1958},
+  {rank:42, name:"Curvi",          cls:"Sage",      spec:"Awakening",  mmr:1954},
+  {rank:43, name:"KevinsWaifu",    cls:"Maegu",     spec:"Awakening",  mmr:1952},
+  {rank:44, name:"Feedz",          cls:"Maehwa",    spec:"Awakening",  mmr:1951},
+  {rank:45, name:"AutumnLeafOW",   cls:"Dark Knight",spec:"Awakening",  mmr:1943},
+  {rank:46, name:"Kayray",         cls:"Witch",     spec:"Awakening",  mmr:1939},
+  {rank:47, name:"OkazakI",        cls:"Musa",      spec:"Succession", mmr:1936},
+  {rank:48, name:"Odiven",         cls:"Seraph",    spec:"Awakening",  mmr:1931},
+  {rank:49, name:"MilkLL",         cls:"Wizard",    spec:"Succession", mmr:1928},
+  {rank:50, name:"Bobobuddy",      cls:"Warrior",   spec:"Awakening",  mmr:1924},
+  {rank:51, name:"LarryFish",      cls:"Valkyrie",  spec:"Succession", mmr:1923},
+  {rank:52, name:"Nehl",           cls:"Kunoichi",  spec:"Awakening",  mmr:1922},
+  {rank:53, name:"LLENN",          cls:"Tamer",     spec:"Awakening",  mmr:1922},
+  {rank:54, name:"liar",           cls:"Kunoichi",  spec:"Succession", mmr:1920},
+  {rank:55, name:"Belly",          cls:"Witch",     spec:"Succession", mmr:1919},
+  {rank:56, name:"CVS",            cls:"Musa",      spec:"Awakening",  mmr:1917},
+  {rank:57, name:"Namelezz",       cls:"Hashashin", spec:"Awakening",  mmr:1916},
+  {rank:58, name:"RuJynX",         cls:"Woosa",     spec:"Succession", mmr:1915},
+  {rank:59, name:"Dukes",          cls:"Ninja",     spec:"Awakening",  mmr:1915},
+  {rank:60, name:"Aad",            cls:"Witch",     spec:"Awakening",  mmr:1911},
+  {rank:61, name:"Nosoren",        cls:"Maehwa",    spec:"Succession", mmr:1906},
+  {rank:62, name:"Slimez",         cls:"Berserker", spec:"Awakening",  mmr:1906},
+  {rank:63, name:"Ehsap",          cls:"Archer",    spec:"Succession", mmr:1903},
+  {rank:64, name:"Chief",          cls:"Striker",   spec:"Succession", mmr:1903},
+  {rank:65, name:"Zetheral",       cls:"Hashashin", spec:"Succession", mmr:1902},
+  {rank:66, name:"Asphy",          cls:"Valkyrie",  spec:"Awakening",  mmr:1900},
+  {rank:67, name:"Kevin",          cls:"Maegu",     spec:"Awakening",  mmr:1899},
+  {rank:68, name:"Muzziah",        cls:"Dark Knight",spec:"Awakening",  mmr:1895},
+  {rank:69, name:"Rumpy",          cls:"Nova",      spec:"Awakening",  mmr:1894},
+  {rank:70, name:"Lasgonfuro",     cls:"Lahn",      spec:"Awakening",  mmr:1893},
+  {rank:71, name:"Greeds",         cls:"Ranger",    spec:"Awakening",  mmr:1892},
+  {rank:72, name:"Enemy",          cls:"Kunoichi",  spec:"Succession", mmr:1890},
+  {rank:73, name:"XVI",            cls:"Seraph",    spec:"Awakening",  mmr:1888},
+  {rank:74, name:"Deli",           cls:"Hashashin", spec:"Succession", mmr:1885},
+  {rank:75, name:"VeiVei",         cls:"Maehwa",    spec:"Succession", mmr:1880},
+  {rank:76, name:"Iboc",           cls:"Striker",   spec:"Succession", mmr:1879},
+  {rank:77, name:"YOSHIMARO",      cls:"Seraph",    spec:"Awakening",  mmr:1878},
+  {rank:78, name:"Shiuu",          cls:"Woosa",     spec:"Succession", mmr:1877},
+  {rank:79, name:"Nut",            cls:"Lahn",      spec:"Succession", mmr:1876},
+  {rank:80, name:"ForestHunter",   cls:"Musa",      spec:"Succession", mmr:1874},
+  {rank:81, name:"NeguinhoBanana", cls:"Seraph",    spec:"Awakening",  mmr:1874},
+  {rank:82, name:"Yorane",         cls:"Maehwa",    spec:"Succession", mmr:1873},
+  {rank:83, name:"Twizzzy",        cls:"Lahn",      spec:"Awakening",  mmr:1868},
+  {rank:84, name:"Xephly",         cls:"Corsair",   spec:"Awakening",  mmr:1867},
+  {rank:85, name:"NeppyBay",       cls:"Witch",     spec:"Awakening",  mmr:1864},
+  {rank:86, name:"Weavile",        cls:"Sorceress", spec:"Awakening",  mmr:1862},
+  {rank:87, name:"Huntler",        cls:"Wizard",    spec:"Succession", mmr:1860},
+  {rank:88, name:"Hercules",       cls:"Hashashin", spec:"Succession", mmr:1860},
+  {rank:89, name:"KingJamesIRL",   cls:"Striker",   spec:"Awakening",  mmr:1860},
+  {rank:90, name:"Surskity",       cls:"Kunoichi",  spec:"Awakening",  mmr:1859},
+  {rank:91, name:"Blu15",          cls:"Maegu",     spec:"Awakening",  mmr:1859},
+  {rank:92, name:"Demise",         cls:"Nova",      spec:"Succession", mmr:1857},
+  {rank:93, name:"Vert",           cls:"Kunoichi",  spec:"Awakening",  mmr:1856},
+  {rank:94, name:"Mogway",         cls:"Musa",      spec:"Succession", mmr:1854},
+  {rank:95, name:"Dayhly",         cls:"Tamer",     spec:"Awakening",  mmr:1854},
+  {rank:96, name:"Smovement",      cls:"Archer",    spec:"Succession", mmr:1854},
+  {rank:97, name:"Yisuni",         cls:"Sorceress", spec:"Awakening",  mmr:1849},
+  {rank:98, name:"Gintsugi",       cls:"Valkyrie",  spec:"Awakening",  mmr:1849},
+  {rank:99, name:"Phabi",          cls:"Wizard",    spec:"Succession", mmr:1849},
+  {rank:100,name:"Filmic",         cls:"Mystic",    spec:"Awakening",  mmr:1848},
+];
+
+const classMap = {};
+players.forEach(p => { if (!classMap[p.cls]) classMap[p.cls] = []; classMap[p.cls].push(p); });
+const classesSorted = Object.entries(classMap).sort((a,b) => b[1].length - a[1].length);
+const maxCount = classesSorted[0][1].length;
+
+const statsBar = document.getElementById('statsBar');
+classesSorted.forEach(([cls, ps]) => {
+  const specs = [...new Set(ps.map(p=>p.spec.toLowerCase()))];
+  const specClass = specs.length > 1 ? '' : specs[0];
+  const height = Math.max(4, (ps.length / maxCount) * 80);
+  const seg = document.createElement('div');
+  seg.className = 'stat-seg';
+  seg.innerHTML = `<div class="stat-bar-fill ${specClass}" style="height:${height}px"></div><div class="stat-label">${cls}</div><div class="stat-count">${ps.length}</div>`;
+  seg.onclick = () => { document.getElementById('searchInput').value = cls; applyFilters(); };
+  statsBar.appendChild(seg);
+});
+
+const classGrid = document.getElementById('classGrid');
+classesSorted.forEach(([cls, ps]) => {
+  const specs = [...new Set(ps.map(p=>p.spec.toLowerCase()))];
+  const specClass = specs.length > 1 ? 'mixed' : specs[0];
+  const card = document.createElement('div');
+  card.className = `class-card ${specClass}-card`;
+  card.dataset.cls = cls.toLowerCase();
+  card.dataset.count = ps.length;
+  card.dataset.specs = specs.join(',');
+  const chips = ps.map(p => `<span class="player-chip ${p.rank <= 3 ? 'top3' : ''}"><span class="rank-num">#${p.rank}</span>${p.name}</span>`).join('');
+  const specTags = specs.map(s => `<span class="spec-tag ${s}">${s}</span>`).join('');
+  card.innerHTML = `<div class="card-header"><div class="class-name">${cls}</div><div><div class="class-count-badge">${ps.length}</div><div class="count-label">Top 100</div></div></div><div class="spec-tags">${specTags}</div><div class="player-list">${chips}</div>`;
+  classGrid.appendChild(card);
+});
+
+const lbBody = document.getElementById('lbBody');
+players.forEach(p => {
+  const tr = document.createElement('tr');
+  tr.dataset.name = p.name.toLowerCase();
+  tr.dataset.cls = p.cls.toLowerCase();
+  tr.dataset.spec = p.spec.toLowerCase();
+  const rankClass = p.rank === 1 ? 'top1' : p.rank === 2 ? 'top2' : p.rank === 3 ? 'top3' : '';
+  tr.innerHTML = `<td class="lb-rank ${rankClass}">${p.rank}</td><td class="lb-name">${p.name}</td><td class="lb-class">${p.cls}</td><td><span class="lb-spec-badge ${p.spec.toLowerCase()}">${p.spec}</span></td><td class="lb-score">${p.mmr.toLocaleString()}</td>`;
+  lbBody.appendChild(tr);
+});
+
+let activeFilter = 'all';
+function setFilter(type, btn) {
+  activeFilter = type;
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  applyFilters();
+}
+function applyFilters() {
+  const q = document.getElementById('searchInput').value.toLowerCase().trim();
+  document.querySelectorAll('.class-card').forEach(card => {
+    const cls = card.dataset.cls;
+    const count = parseInt(card.dataset.count);
+    const specs = card.dataset.specs;
+    let show = true;
+    if (activeFilter === 'awakening' && !specs.includes('awakening')) show = false;
+    if (activeFilter === 'succession' && !specs.includes('succession')) show = false;
+    if (activeFilter === 'top5' && count < 5) show = false;
+    if (q && !cls.includes(q) && !card.textContent.toLowerCase().includes(q)) show = false;
+    card.classList.toggle('hidden', !show);
+  });
+  document.querySelectorAll('#lbBody tr').forEach(row => {
+    const name = row.dataset.name;
+    const cls = row.dataset.cls;
+    const spec = row.dataset.spec;
+    let show = true;
+    if (activeFilter === 'awakening' && spec !== 'awakening') show = false;
+    if (activeFilter === 'succession' && spec !== 'succession') show = false;
+    if (q && !name.includes(q) && !cls.includes(q)) show = false;
+    row.classList.toggle('hidden', !show);
+  });
+  document.querySelectorAll('#historyBody tr').forEach(row => {
+    const cls = row.dataset.cls;
+    let show = true;
+    if (q && !cls.includes(q)) show = false;
+    row.classList.toggle('hidden', !show);
+  });
+}
+
+const seasonHistory = [
+  {cls:"Kunoichi",    seasons:[2,1,2,10]},
+  {cls:"Dark Knight", seasons:[3,4,7,8]},
+  {cls:"Tamer",       seasons:[3,6,3,6]},
+  {cls:"Lahn",        seasons:[1,3,3,6]},
+  {cls:"Hashashin",   seasons:[3,3,10,5]},
+  {cls:"Maehwa",      seasons:[3,0,3,5]},
+  {cls:"Seraph",      seasons:[0,0,0,5]},
+  {cls:"Musa",        seasons:[4,2,3,4]},
+  {cls:"Valkyrie",    seasons:[2,4,0,4]},
+  {cls:"Ninja",       seasons:[0,2,3,4]},
+  {cls:"Nova",        seasons:[11,9,2,3]},
+  {cls:"Maegu",       seasons:[2,12,5,3]},
+  {cls:"Sage",        seasons:[4,0,14,3]},
+  {cls:"Striker",     seasons:[5,7,4,3]},
+  {cls:"Wizard",      seasons:[3,1,1,3]},
+  {cls:"Witch",       seasons:[1,1,0,3]},
+  {cls:"Guardian",    seasons:[0,0,1,3]},
+  {cls:"Mystic",      seasons:[2,9,8,2]},
+  {cls:"Warrior",     seasons:[5,7,6,2]},
+  {cls:"Dosa",        seasons:[1,4,2,2]},
+  {cls:"Corsair",     seasons:[1,0,2,2]},
+  {cls:"Sorceress",   seasons:[0,1,0,2]},
+  {cls:"Archer",      seasons:[0,0,1,2]},
+  {cls:"Ranger",      seasons:[0,0,1,2]},
+  {cls:"Woosa",       seasons:[0,0,0,2]},
+  {cls:"Berserker",   seasons:[24,10,10,1]},
+  {cls:"Drakania",    seasons:[5,1,1,1]},
+  {cls:"Wukong",      seasons:[0,0,0,1]},
+  {cls:"Deadeye",     seasons:[0,10,3,0]},
+  {cls:"Scholar",     seasons:[3,1,1,0]},
+  {cls:"Shai",        seasons:[1,0,0,0]},
+];
+const historyMax = Math.max(...seasonHistory.flatMap(r => r.seasons));
+function cellTier(v) {
+  if (v === 0) return 'zero';
+  if (v >= historyMax * 0.55) return 'high';
+  if (v >= historyMax * 0.25) return 'med';
+  return 'low';
+}
+function sparkline(values) {
+  const w = 84, h = 22, pad = 3;
+  const max = Math.max(...values, 1);
+  const stepX = (w - pad*2) / (values.length - 1);
+  const points = values.map((v,i) => {
+    const x = pad + i * stepX;
+    const y = h - pad - (v / max) * (h - pad*2);
+    return [x, y];
+  });
+  const poly = points.map(p => p.join(',')).join(' ');
+  const dots = points.map(([x,y],i) => `<circle cx="${x}" cy="${y}" r="${i === points.length-1 ? 2.2 : 1.5}" fill="${i === points.length-1 ? 'var(--gold-light)' : 'var(--gold)'}"/>`).join('');
+  return `<svg class="spark" width="${w}" height="${h}" viewBox="0 0 ${w} ${h}" aria-hidden="true"><polyline points="${poly}" fill="none" stroke="var(--gold)" stroke-width="1.4" stroke-linejoin="round" stroke-linecap="round" opacity="0.85"/>${dots}</svg>`;
+}
+function trendArrow(values) {
+  const last = values[values.length-1];
+  const prev = values[values.length-2];
+  if (last > prev) return `<span class="trend-arrow trend-up" title="+${last-prev} vs S6">▲</span>`;
+  if (last < prev) return `<span class="trend-arrow trend-down" title="${last-prev} vs S6">▼</span>`;
+  return `<span class="trend-arrow trend-flat" title="No change">▬</span>`;
+}
+const historyBody = document.getElementById('historyBody');
+function renderHistory(sortKey = 3, asc = false) {
+  const sorted = [...seasonHistory].sort((a,b) => {
+    if (sortKey === 'cls') return asc ? a.cls.localeCompare(b.cls) : b.cls.localeCompare(a.cls);
+    const diff = a.seasons[sortKey] - b.seasons[sortKey];
+    return asc ? diff : -diff;
+  });
+  historyBody.innerHTML = sorted.map(row => {
+    const cells = row.seasons.map((v, idx) => `<td class="history-cell ${cellTier(v)} ${idx === 3 ? 'current-col' : ''}">${v}</td>`).join('');
+    return `<tr data-cls="${row.cls.toLowerCase()}"><td class="cls-name">${row.cls}</td>${cells}<td>${sparkline(row.seasons)}${trendArrow(row.seasons)}</td></tr>`;
+  }).join('');
+  applyFilters();
+}
+document.querySelectorAll('#historyTable th[data-sort]').forEach(th => {
+  th.addEventListener('click', () => {
+    const key = th.dataset.sort;
+    const sortKey = key === 'cls' ? 'cls' : parseInt(key);
+    const wasSorted = th.classList.contains('sorted');
+    const asc = wasSorted ? !th.classList.contains('asc') : (key === 'cls');
+    document.querySelectorAll('#historyTable th').forEach(h => h.classList.remove('sorted','asc'));
+    th.classList.add('sorted');
+    if (asc) th.classList.add('asc');
+    renderHistory(sortKey, asc);
+  });
+});
+renderHistory();
+</script>
+</body>
+</html>
