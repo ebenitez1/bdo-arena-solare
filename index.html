@@ -80,20 +80,8 @@
 
   main { max-width: 1300px; margin: 0 auto; padding: 40px 20px 80px; }
 
-  .controls {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 12px;
-    align-items: center;
-    margin-bottom: 36px;
-  }
-
-  .search-wrap {
-    flex: 1;
-    min-width: 220px;
-    position: relative;
-  }
-
+  .controls { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; margin-bottom: 36px; }
+  .search-wrap { flex: 1; min-width: 220px; position: relative; }
   .search-wrap input {
     width: 100%;
     background: var(--surface);
@@ -105,9 +93,7 @@
     outline: none;
     transition: border-color 0.2s;
   }
-
   .search-wrap input:focus { border-color: var(--gold); }
-
   .search-wrap::before {
     content: '⌕';
     position: absolute;
@@ -117,9 +103,7 @@
     color: var(--text-dim);
     font-size: 18px;
   }
-
   .filters { display: flex; gap: 8px; flex-wrap: wrap; }
-
   .filter-btn {
     background: var(--surface);
     border: 1px solid var(--border);
@@ -133,261 +117,79 @@
     text-transform: uppercase;
     transition: all 0.2s;
   }
-
   .filter-btn:hover { border-color: var(--gold); color: var(--gold); }
   .filter-btn.active { background: var(--gold); border-color: var(--gold); color: #000; }
 
-  .stats-bar {
-    display: flex;
-    gap: 2px;
-    margin-bottom: 40px;
-    overflow-x: auto;
-    padding-bottom: 4px;
-  }
-
-  .stat-seg {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: flex-end;
-    min-width: 44px;
-    cursor: pointer;
-    padding-bottom: 6px;
-    transition: opacity 0.2s;
-  }
-
+  .stats-bar { display: flex; gap: 2px; margin-bottom: 40px; overflow-x: auto; padding-bottom: 4px; }
+  .stat-seg { display: flex; flex-direction: column; align-items: center; justify-content: flex-end; min-width: 44px; cursor: pointer; padding-bottom: 6px; transition: opacity 0.2s; }
   .stat-seg:hover { opacity: 0.8; }
-
-  .stat-bar-fill {
-    width: 36px;
-    background: var(--gold);
-    transition: height 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
-    min-height: 4px;
-  }
-
+  .stat-bar-fill { width: 36px; background: var(--gold); transition: height 0.5s cubic-bezier(0.34, 1.56, 0.64, 1); min-height: 4px; }
   .stat-bar-fill.awakening { background: var(--awakening); }
   .stat-bar-fill.succession { background: var(--succession); }
+  .stat-label { font-size: 9px; font-weight: 700; letter-spacing: 0.5px; color: var(--text-dim); text-align: center; margin-top: 6px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 44px; text-transform: uppercase; }
+  .stat-count { font-family: 'Cinzel', serif; font-size: 11px; color: var(--gold-light); text-align: center; margin-top: 2px; }
 
-  .stat-label {
-    font-size: 9px;
-    font-weight: 700;
-    letter-spacing: 0.5px;
-    color: var(--text-dim);
-    text-align: center;
-    margin-top: 6px;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    max-width: 44px;
-    text-transform: uppercase;
-  }
+  .section-title { font-family: 'Cinzel', serif; font-size: 13px; font-weight: 600; letter-spacing: 3px; color: var(--text-dim); text-transform: uppercase; margin-bottom: 20px; padding-bottom: 8px; border-bottom: 1px solid var(--border); }
 
-  .stat-count {
-    font-family: 'Cinzel', serif;
-    font-size: 11px;
-    color: var(--gold-light);
-    text-align: center;
-    margin-top: 2px;
-  }
-
-  .section-title {
-    font-family: 'Cinzel', serif;
-    font-size: 13px;
-    font-weight: 600;
-    letter-spacing: 3px;
-    color: var(--text-dim);
-    text-transform: uppercase;
-    margin-bottom: 20px;
-    padding-bottom: 8px;
-    border-bottom: 1px solid var(--border);
-  }
-
-  .class-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-    gap: 12px;
-    margin-bottom: 56px;
-  }
-
-  .class-card {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    padding: 18px;
-    transition: border-color 0.2s, transform 0.2s;
-    position: relative;
-    overflow: hidden;
-  }
-
-  .class-card::before {
-    content: '';
-    position: absolute;
-    top: 0; left: 0; right: 0;
-    height: 2px;
-    background: var(--gold);
-    opacity: 0;
-    transition: opacity 0.2s;
-  }
-
+  .class-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 12px; margin-bottom: 56px; }
+  .class-card { background: var(--surface); border: 1px solid var(--border); padding: 18px; transition: border-color 0.2s, transform 0.2s; position: relative; overflow: hidden; }
+  .class-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px; background: var(--gold); opacity: 0; transition: opacity 0.2s; }
   .class-card:hover { border-color: var(--gold); transform: translateY(-2px); }
   .class-card:hover::before { opacity: 1; }
   .class-card.hidden { display: none; }
-
   .class-card.awakening-card::before { background: var(--awakening); }
   .class-card.succession-card::before { background: var(--succession); }
   .class-card.mixed-card::before { background: linear-gradient(90deg, var(--awakening), var(--succession)); }
-
-  .card-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    margin-bottom: 14px;
-  }
-
-  .class-name {
-    font-family: 'Cinzel', serif;
-    font-size: 16px;
-    font-weight: 600;
-    color: #fff;
-  }
-
-  .class-count-badge {
-    font-family: 'Cinzel', serif;
-    font-size: 22px;
-    font-weight: 900;
-    color: var(--gold-light);
-    line-height: 1;
-  }
-
+  .card-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 14px; }
+  .class-name { font-family: 'Cinzel', serif; font-size: 16px; font-weight: 600; color: #fff; }
+  .class-count-badge { font-family: 'Cinzel', serif; font-size: 22px; font-weight: 900; color: var(--gold-light); line-height: 1; }
   .count-label { font-size: 10px; color: var(--text-dim); text-align: right; letter-spacing: 1px; }
-
   .spec-tags { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 12px; }
-
-  .spec-tag {
-    font-size: 10px;
-    font-weight: 700;
-    letter-spacing: 1.5px;
-    padding: 3px 8px;
-    text-transform: uppercase;
-    border: 1px solid;
-  }
-
+  .spec-tag { font-size: 10px; font-weight: 700; letter-spacing: 1.5px; padding: 3px 8px; text-transform: uppercase; border: 1px solid; }
   .spec-tag.awakening { color: var(--awakening); border-color: rgba(192,57,43,0.4); background: rgba(192,57,43,0.08); }
   .spec-tag.succession { color: #4a90d9; border-color: rgba(74,144,217,0.4); background: rgba(74,144,217,0.08); }
-
   .player-list { display: flex; flex-wrap: wrap; gap: 6px; }
-
-  .player-chip {
-    font-size: 12px;
-    font-weight: 600;
-    color: var(--text-dim);
-    background: var(--surface2);
-    border: 1px solid var(--border);
-    padding: 2px 8px;
-    cursor: default;
-    transition: color 0.15s;
-  }
-
+  .player-chip { font-size: 12px; font-weight: 600; color: var(--text-dim); background: var(--surface2); border: 1px solid var(--border); padding: 2px 8px; cursor: default; transition: color 0.15s; }
   .player-chip:hover { color: var(--text); }
-
-  .player-chip .rank-num {
-    color: var(--gold);
-    font-size: 10px;
-    margin-right: 4px;
-    font-family: 'Cinzel', serif;
-  }
-
-  .player-chip.top3 {
-    border-color: rgba(200,146,42,0.5);
-    background: rgba(200,146,42,0.1);
-    color: var(--gold-light);
-  }
+  .player-chip .rank-num { color: var(--gold); font-size: 10px; margin-right: 4px; font-family: 'Cinzel', serif; }
+  .player-chip.top3 { border-color: rgba(200,146,42,0.5); background: rgba(200,146,42,0.1); color: var(--gold-light); }
 
   .lb-table { width: 100%; border-collapse: collapse; }
   .lb-table thead tr { border-bottom: 1px solid var(--border); }
-  .lb-table th {
-    font-family: 'Rajdhani', sans-serif;
-    font-size: 11px;
-    font-weight: 700;
-    letter-spacing: 2px;
-    color: var(--text-dim);
-    text-transform: uppercase;
-    padding: 8px 12px;
-    text-align: left;
-  }
-  .lb-table tbody tr {
-    border-bottom: 1px solid rgba(42,47,58,0.5);
-    transition: background 0.15s;
-  }
+  .lb-table th { font-family: 'Rajdhani', sans-serif; font-size: 11px; font-weight: 700; letter-spacing: 2px; color: var(--text-dim); text-transform: uppercase; padding: 8px 12px; text-align: left; }
+  .lb-table tbody tr { border-bottom: 1px solid rgba(42,47,58,0.5); transition: background 0.15s; }
   .lb-table tbody tr:hover { background: var(--surface); }
   .lb-table tbody tr.hidden { display: none; }
   .lb-table td { padding: 8px 12px; font-size: 14px; font-weight: 500; }
-  .lb-rank {
-    font-family: 'Cinzel', serif;
-    font-size: 13px;
-    color: var(--text-dim);
-    width: 50px;
-  }
+  .lb-rank { font-family: 'Cinzel', serif; font-size: 13px; color: var(--text-dim); width: 50px; }
   .lb-rank.top1 { color: #ffd700; font-weight: 900; }
   .lb-rank.top2 { color: #c0c0c0; font-weight: 900; }
   .lb-rank.top3 { color: #cd7f32; font-weight: 900; }
   .lb-name { color: var(--text); font-weight: 600; }
   .lb-class { color: var(--text-dim); }
-  .lb-spec-badge {
-    font-size: 10px;
-    font-weight: 700;
-    letter-spacing: 1px;
-    padding: 2px 7px;
-    border: 1px solid;
-    text-transform: uppercase;
-    display: inline-block;
-  }
+  .lb-spec-badge { font-size: 10px; font-weight: 700; letter-spacing: 1px; padding: 2px 7px; border: 1px solid; text-transform: uppercase; display: inline-block; }
   .lb-spec-badge.awakening { color: var(--awakening); border-color: rgba(192,57,43,0.35); }
   .lb-spec-badge.succession { color: #4a90d9; border-color: rgba(74,144,217,0.35); }
 
   .history-wrap { margin-bottom: 56px; overflow-x: auto; }
   .history-table { width: 100%; border-collapse: collapse; min-width: 560px; }
   .history-table thead tr { border-bottom: 1px solid var(--border); }
-  .history-table th {
-    font-family: 'Rajdhani', sans-serif;
-    font-size: 11px;
-    font-weight: 700;
-    letter-spacing: 2px;
-    color: var(--text-dim);
-    text-transform: uppercase;
-    padding: 10px 12px;
-    text-align: center;
-    cursor: pointer;
-    user-select: none;
-    transition: color 0.15s;
-  }
+  .history-table th { font-family: 'Rajdhani', sans-serif; font-size: 11px; font-weight: 700; letter-spacing: 2px; color: var(--text-dim); text-transform: uppercase; padding: 10px 12px; text-align: center; cursor: pointer; user-select: none; transition: color 0.15s; }
   .history-table th:hover { color: var(--gold); }
   .history-table th:first-child { text-align: left; }
   .history-table th.current { color: var(--gold); }
   .history-table th.sorted::after { content: ' ▼'; font-size: 9px; color: var(--gold); }
   .history-table th.sorted.asc::after { content: ' ▲'; }
-  .history-table tbody tr {
-    border-bottom: 1px solid rgba(42,47,58,0.5);
-    transition: background 0.15s;
-  }
+  .history-table tbody tr { border-bottom: 1px solid rgba(42,47,58,0.5); transition: background 0.15s; }
   .history-table tbody tr:hover { background: var(--surface); }
   .history-table tbody tr.hidden { display: none; }
   .history-table td { padding: 8px 12px; font-size: 14px; text-align: center; }
-  .history-table td.cls-name {
-    text-align: left;
-    font-weight: 600;
-    color: var(--text);
-    font-family: 'Cinzel', serif;
-    font-size: 13px;
-  }
+  .history-table td.cls-name { text-align: left; font-weight: 600; color: var(--text); font-family: 'Cinzel', serif; font-size: 13px; }
   .history-cell { font-family: 'Cinzel', serif; font-weight: 600; }
   .history-cell.zero { color: var(--text-dim); opacity: 0.35; }
   .history-cell.low { color: var(--text); }
   .history-cell.med { color: var(--gold); }
-  .history-cell.high {
-    color: var(--gold-light);
-    font-weight: 900;
-    text-shadow: 0 0 12px rgba(232,184,75,0.4);
-  }
+  .history-cell.high { color: var(--gold-light); font-weight: 900; text-shadow: 0 0 12px rgba(232,184,75,0.4); }
   .history-cell.current-col { background: rgba(200,146,42,0.05); }
   .spark { display: inline-block; vertical-align: middle; }
   .trend-arrow { font-size: 11px; margin-left: 8px; vertical-align: middle; }
@@ -528,31 +330,31 @@ const players = [
   {rank:68, name:"Flowers",         cls:"Dosa",        spec:"Awakening"},
   {rank:69, name:"LLENN",           cls:"Tamer",       spec:"Awakening"},
   {rank:70, name:"Belly",           cls:"Witch",       spec:"Succession"},
-  {rank:71, name:"Reischer",        cls:"Nova",        spec:"Awakening"},
+  {rank:71, name:"Reischer",        cls:"Drakania",    spec:"Awakening"},
   {rank:72, name:"Dmike",           cls:"Striker",     spec:"Awakening"},
-  {rank:73, name:"Qwertyui",        cls:"Mystic",      spec:"Awakening"},
-  {rank:74, name:"BobaFudge",       cls:"Sorceress",   spec:"Succession"},
+  {rank:73, name:"Qwertyui",        cls:"Musa",        spec:"Awakening"},
+  {rank:74, name:"BobaFudge",       cls:"Dosa",        spec:"Succession"},
   {rank:75, name:"Chief",           cls:"Striker",     spec:"Awakening"},
-  {rank:76, name:"Asrii",           cls:"Valkyrie",    spec:"Succession"},
+  {rank:76, name:"Asrii",           cls:"Tamer",       spec:"Succession"},
   {rank:77, name:"Pancham",         cls:"Striker",     spec:"Succession"},
-  {rank:78, name:"Kriegsmesser",    cls:"Dosa",        spec:"Succession"},
+  {rank:78, name:"Kriegsmesser",    cls:"Dark Knight", spec:"Succession"},
   {rank:79, name:"Aad",             cls:"Witch",       spec:"Awakening"},
   {rank:80, name:"Curvi",           cls:"Sage",        spec:"Awakening"},
   {rank:81, name:"Odiven",          cls:"Seraph",      spec:"Awakening"},
   {rank:82, name:"Druntkist",       cls:"Maehwa",      spec:"Succession"},
   {rank:83, name:"Feedz",           cls:"Maehwa",      spec:"Awakening"},
   {rank:84, name:"Multimeltor",     cls:"Mystic",      spec:"Awakening"},
-  {rank:85, name:"Loluet",          cls:"Dosa",        spec:"Succession"},
+  {rank:85, name:"Loluet",          cls:"Dark Knight", spec:"Succession"},
   {rank:86, name:"Eclipsing",       cls:"Kunoichi",    spec:"Awakening"},
   {rank:87, name:"Filmic",          cls:"Mystic",      spec:"Awakening"},
   {rank:88, name:"Lasgonfuro",      cls:"Lahn",        spec:"Awakening"},
   {rank:89, name:"Namelezz",        cls:"Hashashin",   spec:"Awakening"},
   {rank:90, name:"Rumpy",           cls:"Nova",        spec:"Awakening"},
-  {rank:91, name:"Sumeragui",       cls:"Dark Knight", spec:"Succession"},
+  {rank:91, name:"Sumeragui",       cls:"Valkyrie",    spec:"Succession"},
   {rank:92, name:"Weavile",         cls:"Sorceress",   spec:"Awakening"},
   {rank:93, name:"XVI",             cls:"Seraph",      spec:"Awakening"},
   {rank:94, name:"Blu15",           cls:"Maegu",       spec:"Awakening"},
-  {rank:95, name:"GareSA",          cls:"Dosa",        spec:"Succession"},
+  {rank:95, name:"GareSA",          cls:"Dark Knight", spec:"Succession"},
   {rank:96, name:"Dayhly",          cls:"Tamer",       spec:"Awakening"},
   {rank:97, name:"Mogway",          cls:"Musa",        spec:"Succession"},
   {rank:98, name:"ForestHunter",    cls:"Musa",        spec:"Succession"},
