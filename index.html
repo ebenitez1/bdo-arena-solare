@@ -443,39 +443,48 @@ function applyFilters() {
   });
 }
 
+// Season History: S4-S6 are static historical data; S7 is auto-computed from current players array
 const seasonHistory = [
-  {cls:"Kunoichi",    seasons:[2,1,2,10]},
-  {cls:"Dark Knight", seasons:[3,4,7,8]},
-  {cls:"Tamer",       seasons:[3,6,3,6]},
-  {cls:"Lahn",        seasons:[1,3,3,6]},
-  {cls:"Hashashin",   seasons:[3,3,10,5]},
-  {cls:"Maehwa",      seasons:[3,0,3,5]},
-  {cls:"Seraph",      seasons:[0,0,0,5]},
-  {cls:"Musa",        seasons:[4,2,3,4]},
-  {cls:"Valkyrie",    seasons:[2,4,0,4]},
-  {cls:"Ninja",       seasons:[0,2,3,4]},
-  {cls:"Nova",        seasons:[11,9,2,3]},
-  {cls:"Maegu",       seasons:[2,12,5,3]},
-  {cls:"Sage",        seasons:[4,0,14,3]},
-  {cls:"Striker",     seasons:[5,7,4,3]},
-  {cls:"Wizard",      seasons:[3,1,1,3]},
-  {cls:"Witch",       seasons:[1,1,0,3]},
-  {cls:"Guardian",    seasons:[0,0,1,3]},
-  {cls:"Mystic",      seasons:[2,9,8,2]},
-  {cls:"Warrior",     seasons:[5,7,6,2]},
-  {cls:"Dosa",        seasons:[1,4,2,2]},
-  {cls:"Corsair",     seasons:[1,0,2,2]},
-  {cls:"Sorceress",   seasons:[0,1,0,2]},
-  {cls:"Archer",      seasons:[0,0,1,2]},
-  {cls:"Ranger",      seasons:[0,0,1,2]},
-  {cls:"Woosa",       seasons:[0,0,0,2]},
-  {cls:"Berserker",   seasons:[24,10,10,1]},
-  {cls:"Drakania",    seasons:[5,1,1,1]},
-  {cls:"Wukong",      seasons:[0,0,0,1]},
+  {cls:"Kunoichi",    seasons:[2,1,2,0]},
+  {cls:"Dark Knight", seasons:[3,4,7,0]},
+  {cls:"Tamer",       seasons:[3,6,3,0]},
+  {cls:"Lahn",        seasons:[1,3,3,0]},
+  {cls:"Hashashin",   seasons:[3,3,10,0]},
+  {cls:"Maehwa",      seasons:[3,0,3,0]},
+  {cls:"Seraph",      seasons:[0,0,0,0]},
+  {cls:"Musa",        seasons:[4,2,3,0]},
+  {cls:"Valkyrie",    seasons:[2,4,0,0]},
+  {cls:"Ninja",       seasons:[0,2,3,0]},
+  {cls:"Nova",        seasons:[11,9,2,0]},
+  {cls:"Maegu",       seasons:[2,12,5,0]},
+  {cls:"Sage",        seasons:[4,0,14,0]},
+  {cls:"Striker",     seasons:[5,7,4,0]},
+  {cls:"Wizard",      seasons:[3,1,1,0]},
+  {cls:"Witch",       seasons:[1,1,0,0]},
+  {cls:"Guardian",    seasons:[0,0,1,0]},
+  {cls:"Mystic",      seasons:[2,9,8,0]},
+  {cls:"Warrior",     seasons:[5,7,6,0]},
+  {cls:"Dosa",        seasons:[1,4,2,0]},
+  {cls:"Corsair",     seasons:[1,0,2,0]},
+  {cls:"Sorceress",   seasons:[0,1,0,0]},
+  {cls:"Archer",      seasons:[0,0,1,0]},
+  {cls:"Ranger",      seasons:[0,0,1,0]},
+  {cls:"Woosa",       seasons:[0,0,0,0]},
+  {cls:"Berserker",   seasons:[24,10,10,0]},
+  {cls:"Drakania",    seasons:[5,1,1,0]},
+  {cls:"Wukong",      seasons:[0,0,0,0]},
   {cls:"Deadeye",     seasons:[0,10,3,0]},
   {cls:"Scholar",     seasons:[3,1,1,0]},
   {cls:"Shai",        seasons:[1,0,0,0]},
 ];
+
+// Auto-compute S7 column from current players array (always stays in sync with leaderboard)
+(function syncS7() {
+  const s7Counts = {};
+  players.forEach(p => { s7Counts[p.cls] = (s7Counts[p.cls] || 0) + 1; });
+  seasonHistory.forEach(row => { row.seasons[3] = s7Counts[row.cls] || 0; });
+})();
+
 const historyMax = Math.max(...seasonHistory.flatMap(r => r.seasons));
 function cellTier(v) {
   if (v === 0) return 'zero';
