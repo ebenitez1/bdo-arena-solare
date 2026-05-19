@@ -145,12 +145,26 @@
   .class-count-badge { font-family: 'Cinzel', serif; font-size: 22px; font-weight: 900; color: var(--gold-light); line-height: 1; }
   .count-label { font-size: 10px; color: var(--text-dim); text-align: right; letter-spacing: 1px; }
   .spec-tags { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 12px; }
-  .spec-tag { font-size: 10px; font-weight: 700; letter-spacing: 1.5px; padding: 3px 8px; text-transform: uppercase; border: 1px solid; }
+  .spec-tag {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    padding: 3px 8px;
+    text-transform: uppercase;
+    border: 1px solid;
+    cursor: pointer;
+    user-select: none;
+    transition: background 0.15s, color 0.15s, border-color 0.15s, opacity 0.15s;
+  }
+  .spec-tag:hover { opacity: 0.7; }
   .spec-tag.awakening { color: var(--awakening); border-color: rgba(192,57,43,0.4); background: rgba(192,57,43,0.08); }
   .spec-tag.succession { color: #4a90d9; border-color: rgba(74,144,217,0.4); background: rgba(74,144,217,0.08); }
+  .spec-tag.active.awakening { color: #fff; background: var(--awakening); border-color: var(--awakening); opacity: 1; }
+  .spec-tag.active.succession { color: #fff; background: #4a90d9; border-color: #4a90d9; opacity: 1; }
   .player-list { display: flex; flex-wrap: wrap; gap: 6px; }
-  .player-chip { font-size: 12px; font-weight: 600; color: var(--text-dim); background: var(--surface2); border: 1px solid var(--border); padding: 2px 8px; cursor: default; transition: color 0.15s; }
+  .player-chip { font-size: 12px; font-weight: 600; color: var(--text-dim); background: var(--surface2); border: 1px solid var(--border); padding: 2px 8px; cursor: default; transition: color 0.15s, opacity 0.2s; }
   .player-chip:hover { color: var(--text); }
+  .player-chip.chip-hidden { display: none; }
   .player-chip .rank-num { color: var(--gold); font-size: 10px; margin-right: 4px; font-family: 'Cinzel', serif; }
   .player-chip.top3 { border-color: rgba(200,146,42,0.5); background: rgba(200,146,42,0.1); color: var(--gold-light); }
 
@@ -388,10 +402,31 @@ classesSorted.forEach(([cls, ps]) => {
   card.dataset.cls = cls.toLowerCase();
   card.dataset.count = ps.length;
   card.dataset.specs = specs.join(',');
-  const chips = ps.map(p => `<span class="player-chip ${p.rank <= 3 ? 'top3' : ''}"><span class="rank-num">#${p.rank}</span>${p.name}</span>`).join('');
-  const specTags = specs.map(s => `<span class="spec-tag ${s}">${s}</span>`).join('');
+  const chips = ps.map(p => `<span class="player-chip ${p.rank <= 3 ? 'top3' : ''}" data-spec="${p.spec.toLowerCase()}"><span class="rank-num">#${p.rank}</span>${p.name}</span>`).join('');
+  const specTags = specs.map(s => `<span class="spec-tag ${s}" data-spec="${s}" title="Click to filter ${s} only">${s}</span>`).join('');
   card.innerHTML = `<div class="card-header"><div class="class-name">${cls}</div><div><div class="class-count-badge">${ps.length}</div><div class="count-label">Top 100</div></div></div><div class="spec-tags">${specTags}</div><div class="player-list">${chips}</div>`;
   classGrid.appendChild(card);
+
+  // Click on a spec tag inside a card filters that card's player chips by spec.
+  // Click the active tag again (or click the other tag) to swap/clear the filter.
+  card.querySelectorAll('.spec-tag').forEach(tag => {
+    tag.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const targetSpec = tag.dataset.spec;
+      const wasActive = tag.classList.contains('active');
+      card.querySelectorAll('.spec-tag').forEach(t => t.classList.remove('active'));
+      if (wasActive) {
+        // Toggle off: show all players in this card
+        card.querySelectorAll('.player-chip').forEach(c => c.classList.remove('chip-hidden'));
+      } else {
+        // Activate: show only matching-spec players in this card
+        tag.classList.add('active');
+        card.querySelectorAll('.player-chip').forEach(c => {
+          c.classList.toggle('chip-hidden', c.dataset.spec !== targetSpec);
+        });
+      }
+    });
+  });
 });
 
 const lbBody = document.getElementById('lbBody');
